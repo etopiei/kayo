@@ -1,0 +1,4 @@
+.vscode/*
+node_modules/*
+sports-example.json
+token-example.json

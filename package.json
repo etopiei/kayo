@@ -1,0 +1,21 @@
+{
+  "name": "kayo",
+  "version": "0.1.0",
+  "description": "A desktop electron app to stream Kayo",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Lol\""
+  },
+  "keywords": [
+    "kayo",
+    "sports",
+    "electron",
+    "kayosports"
+  ],
+  "author": "etopiei",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "electron": "^5.0.6"
+  }
+}
