@@ -2,3 +2,5 @@
 node_modules/*
 sports-example.json
 token-example.json
+.DS_Store
+dist/*

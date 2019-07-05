@@ -7,21 +7,18 @@ let win
 function createWindow () {
   // Create the browser window.
   win = new BrowserWindow({
-    width: 800,
-    height: 600,
     webPreferences: {
       nodeIntegration: true
     }
-  })
+  });
+
+  win.maximize();
 
   // set the session to use fake User Agent
   win.webContents.setUserAgent("au.com.foxsports.core.App/1.1.5 (Linux;Android 8.1.0) ExoPlayerLib/2.7.3");
 
   // and load the index.html of the app.
   win.loadFile('index.html')
-
-  // Open the DevTools.
-  win.webContents.openDevTools()
 
   // Emitted when the window is closed.
   win.on('closed', () => {

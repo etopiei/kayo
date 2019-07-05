@@ -1,10 +1,11 @@
 {
   "name": "kayo",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A desktop electron app to stream Kayo",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+	"build": "electron-builder -mwl",
     "test": "echo \"Lol\""
   },
   "keywords": [
@@ -16,6 +17,7 @@
   "author": "etopiei",
   "license": "GPL-2.0",
   "devDependencies": {
-    "electron": "^5.0.6"
+    "electron": "^5.0.6",
+    "electron-builder": "^20.44.4"
   }
 }
