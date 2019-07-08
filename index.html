@@ -9,6 +9,7 @@
     <head>
         <link href="./main.css" media="screen" rel="stylesheet" type="text/css">
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+        <script src="./kayo.js"></script>
     </head>
     <body>
         <h3>Kayo</h3>
@@ -18,10 +19,22 @@
             <button onclick="goLogin()">Login</button>
         </div>
         <div id="Profile">
-            <p>Loading Profiles. Please Wait.</p>
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
         </div>
         <div id="Channels">
-            <p>Loading Live Events. Please Wait.</p>
+            <div class="spinner">
+                <div class="rect1"></div>
+                <div class="rect2"></div>
+                <div class="rect3"></div>
+                <div class="rect4"></div>
+                <div class="rect5"></div>
+            </div>
         </div>
         <div id="Stream">
             <video id="stream-el"></video>
@@ -55,7 +68,7 @@ function changeView(newView) {
         document.getElementById(view).style.display = 'none';
     });
     // Show the new view
-    if (newView === "Channels") {
+    if (newView === "Profile") {
         document.getElementById(newView).style.display = "flex";
     } else {
         document.getElementById(newView).style.display = "block";
@@ -121,6 +134,9 @@ function goChannels() {
     changeView("Channels");
     getEvents(accessTokenObject["access_token"], profile).then(data => {
         console.log(data);
+        const event_container = document.createElement("div");
+        event_container.id = "ev-container";
+        event_container.style.display = "flex";
         document.getElementById("Channels").innerHTML = "";
         const channel_heading = document.createElement("h2");
         channel_heading.innerText = "Live Events";
@@ -132,8 +148,9 @@ function goChannels() {
             let description = event.data.asset.description;
             let sport = event.data.asset.sport;
             let eventBlock = constructEvent(id, title, description, sport);
-            document.getElementById("Channels").appendChild(eventBlock);
+            event_container.appendChild(eventBlock);
         });
+        document.getElementById("Channels").appendChild(event_container);
     }).catch(err => {
         console.log(err);
     });
@@ -160,83 +177,6 @@ function goStream() {
         }
     }).catch(err => {
         console.log(err);
-    });
-}
-
-/**************************************************
- * KAYO FUNCTIONS BELOW HERE - May Seperate this into library later
- * The Kayo functions are all API calls that return Promises that resolve to data or reject with an error.
- * They should not touch app state at all, this way the library can be re-used.
- **************************************************/
-
-// First things first, let's get a Kayo access token
-function login(USERNAME, PASSWORD) {
-    return new Promise((resolve, reject) => {
-        fetch('https://auth.kayosports.com.au/oauth/token', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                audience: "kayosports.com.au",
-                grant_type: "http://auth0.com/oauth/grant-type/password-realm",
-                scope: "openid offline_access",
-                realm: "prod-martian-database",
-                client_id: "qjmv9ZvaMDS9jGvHOxVfImLgQ3G5NrT2",
-                username: USERNAME,
-                password: PASSWORD
-            })
-        }).then(res => res.json()).then(data => {
-            resolve(data);
-        }).catch(err => {
-            reject(err);
-        });
-    });
-}
-
-// Use the access token to get a list of profiles to use to login.
-function getProfiles(accessToken) {
-    return new Promise((resolve, reject) => {
-        fetch("https://profileapi.kayosports.com.au/user/profile", {
-        headers: {
-            "Authorization": `Bearer ${accessToken}`
-        }
-        }).then(res => res.json()).then(data => {
-            resolve(data);
-        }).catch(err => {
-            reject(err);
-        });
-    });
-}
-
-function getEvents(accessToken, profileId) {
-    return new Promise((resolve, reject) => {
-        fetch(`https://vccapi.kayosports.com.au/v2/content/types/landing/names/sports?evaluate=3&profile=${profileId}`, {
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
-        }).then(res => res.json()).then(data => {
-            resolve(data);
-        }).catch(err => {
-            reject(err);
-        });
-    });
-}
-
-function getStream(accessToken, profileId, streamId) {
-    return new Promise((resolve, reject) => {
-        fetch(`https://vmndplay.kayosports.com.au/api/v1/asset/${streamId}/play.json?fields=alternativeStreams`, {
-            method: "POST",
-            headers: {
-                "Authorization": `Bearer ${accessToken}`,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({})
-        }).then(res => res.json()).then(data => {
-            resolve(data);
-        }).catch(err => {
-            reject(err);
-        })
     });
 }
 </script>
