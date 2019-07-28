@@ -35,6 +35,7 @@ input:focus {
 #Login button {
     padding: 16px;
     margin-left: 20%;
+    margin-top: 16px;
     width: 60%;
     background-color: #80d880;
 }
@@ -131,7 +132,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
   }
   
   .spinner > div {
-    background-color: white;
+    background-color: #77e677;
     height: 100%;
     width: 6px;
     display: inline-block;

@@ -136,6 +136,8 @@ function goProfile() {
     }).catch(err => {
         console.log(err);
         // Probably need to re-prompt for login here
+        accessTokenObject = null;
+        changeView("Login");
     });
 }
 
