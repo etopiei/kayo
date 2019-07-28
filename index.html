@@ -10,9 +10,11 @@
         <link href="./main.css" media="screen" rel="stylesheet" type="text/css">
         <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
         <script src="./kayo.js"></script>
+        <script src="./store.js"></script>
     </head>
     <body>
         <h3>Kayo</h3>
+        <button onclick="goBack()" id="back-btn">&#10140;</button>
         <div id="Login">
             <input type="text" name="username" id="username" placeholder="Email">
             <input type="password" name="password" id="password" placeholder="Password">
@@ -37,7 +39,7 @@
             </div>
         </div>
         <div id="Stream">
-            <video id="stream-el"></video>
+            <video id="stream-el" controls></video>
         </div>
     </body>
 </html>
@@ -46,14 +48,23 @@
 /*************************************************
  * GLOBAL STATE OF APP HERE
  ************************************************/
-// Load access token from file if it exists.
-// Otherwise show the login screen to get details.
-// Also check for the refresh token and give that a crack maybe?
 var accessTokenObject = null;
 var views = ["Login", "Profile", "Channels", "Stream"];
 var current_view = 0;
 var profile = null;
 var stream_id = null;
+
+/**************************************************
+ * APP INIT HERE
+ * Load access token from file if it exists.
+ *************************************************/ 
+
+ let tok = getDataFromStore("token");
+ console.log(`Retrieved ${tok} from store`);
+ if (tok !== null) {
+     accessTokenObject = tok;
+     goProfile();
+ }
 
 /**************************************************
  * UI FUNCTIONS BELOW HERE 
@@ -63,6 +74,13 @@ var stream_id = null;
 function changeView(newView) {
     let index = views.indexOf(newView);
     current_view = index;
+    // Decide whether to show the back button or not
+    if (current_view > 1) {
+        document.getElementById("back-btn").style.display = 'block';
+    } else {
+        document.getElementById("back-btn").style.display = 'none';
+    }
+
     // Hide all views except the new one
     views.filter(v => v !== newView).forEach(view => {
         document.getElementById(view).style.display = 'none';
@@ -79,7 +97,9 @@ function changeView(newView) {
 function goLogin() {
     changeView("Login");
     login(document.getElementById("username").value, document.getElementById("password").value).then(data => {
-        accessTokenObject = data;
+        accessTokenObject = data; 
+        // Also store this in the app store
+        saveDataToStore(accessTokenObject, "token");
         goProfile();
     }).catch(err => {
         console.log("Failed to login! :O", err);
@@ -160,7 +180,7 @@ function goStream() {
     changeView("Stream");
     getStream(accessTokenObject["access_token"], profile, stream_id).then(response => {
         const video = document.getElementById('stream-el');
-        const source = response.data[0].recommendedStream.manifest.uri;
+        const source = response.recommendedStream.manifest.uri;
 
         if(Hls.isSupported()) {
             var hls = new Hls();
@@ -178,5 +198,9 @@ function goStream() {
     }).catch(err => {
         console.log(err);
     });
+}
+
+function goBack() {
+    changeView(views[current_view - 1]);
 }
 </script>

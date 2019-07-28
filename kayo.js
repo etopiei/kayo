@@ -75,7 +75,7 @@ function getEvents(accessToken, profileId) {
  */
 function getStream(accessToken, streamId) {
     return new Promise((resolve, reject) => {
-        fetch(`https://vmndplay.kayosports.com.au/api/v1/asset/${streamId}/play.json?fields=alternativeStreams`, {
+        fetch(`https://vmndplay.kayosports.com.au/api/v1/asset/${streamId}/play?fields=alternativeStreams`, {
             method: "POST",
             headers: {
                 "Authorization": `Bearer ${accessToken}`,
@@ -83,7 +83,7 @@ function getStream(accessToken, streamId) {
             },
             body: JSON.stringify({})
         }).then(res => res.json()).then(data => {
-            resolve(data);
+            resolve(data['data'][0]);
         }).catch(err => {
             reject(err);
         })
