@@ -14,9 +14,10 @@ Download this app from the 'Releases' tab in GitHub (or you can compile it yours
 
 To get started developing:
 
-1. Clone Repo
-2. `npm install`
-3. `npm start`
+1. Ensure TypeScript is up to date: `npm install -g typescript@latest`
+2. Clone Repo
+3. `npm install`
+4. `npm start`
 
 ## Roadmap - v1.0 Release
 
