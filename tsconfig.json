@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "sourceMap": false
+    },
+    "include": ["./*.ts"],
+    "exclude": ["node_modules", "**/*.spec.ts"]
+}

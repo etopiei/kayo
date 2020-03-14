@@ -4,8 +4,8 @@
   "description": "A desktop electron app to stream Kayo",
   "main": "index.js",
   "scripts": {
-    "start": "electron .",
-	"build": "electron-builder -mwl",
+    "start": "tsc electron .",
+    "build": "tsc electron-builder -mwl",
     "test": "echo \"Lol\""
   },
   "keywords": [

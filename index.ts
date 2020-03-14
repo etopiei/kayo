@@ -9,7 +9,7 @@ function createWindow () {
   win = new BrowserWindow({
     webPreferences: {
       nodeIntegration: true,
-      "web-security": false
+      "webSecurity": false
     }
   });
 

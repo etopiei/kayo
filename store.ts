@@ -5,21 +5,20 @@ const fs = require('fs');
 // Get user data path
 const userDataPath = (electron.app || electron.remote.app).getPath('userData');
 // We'll use the `configName` property to set the file name and path.join to bring it all together as a string
-data_path = path.join(userDataPath, 'kayo_store.json');
+let data_path = path.join(userDataPath, 'kayo_store.json');
 
 function getDataFromStore(key) {
     // Now read in the conf file if it exists
     try {
-        file_data = JSON.parse(fs.readFileSync(data_path));
+        let file_data = JSON.parse(fs.readFileSync(data_path));
+        return file_data[key];
     } catch (err) {
         return null;
     }
-
-    return file_data[key];
 }
 
 function saveDataToStore(data, key) {
-    file_data = {};
+    let file_data = {};
 
     try {
         file_data = JSON.parse(fs.readFileSync(data_path));
