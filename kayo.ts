@@ -73,7 +73,7 @@ function getEvents(accessToken, profileId) {
  * @param {String} streamId The id of the stream to retrieve data for.
  * @returns A promise which has the stream data, or rejects with an error.
  */
-function getStream(accessToken, _profile, streamId) {
+function getStream(accessToken, streamId) {
     return new Promise((resolve, reject) => {
         fetch(`https://vmndplay.kayosports.com.au/api/v1/asset/${streamId}/play?fields=alternativeStreams,assetType,markers,metadata.isStreaming`, {
             method: "POST",
